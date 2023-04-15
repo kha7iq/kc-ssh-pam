@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
 	"os"
 
@@ -9,7 +11,14 @@ import (
 	"golang.org/x/oauth2"
 )
 
+var (
+	version   string
+	buildDate string
+	commitSha string
+)
+
 func main() {
+	displayVersion()
 	c, err := conf.LoadConfig()
 	if err != nil {
 		log.Fatalf("Error reading config file: %s", err)
@@ -52,4 +61,17 @@ func main() {
 		os.Exit(3)
 	}
 	log.Println("Token acquired and verified Sucessfully.")
+}
+
+func displayVersion() {
+	versionFlag := flag.Bool("version", false, "Display version information")
+	vFlag := flag.Bool("v", false, "Display version number (shorthand)")
+	flag.Parse()
+
+	if *versionFlag || *vFlag {
+		fmt.Println("Version:", version)
+		fmt.Println("Build Date:", buildDate)
+		fmt.Println("Commit SHA:", commitSha)
+		os.Exit(0)
+	}
 }
