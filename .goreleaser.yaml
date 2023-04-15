@@ -47,5 +47,4 @@ nfpms:
     contents:
       - src: config.toml
         dst: /opt/{{ .ProjectName }}/config.toml
-    dependencies:
-    - git
+
