@@ -1,0 +1,51 @@
+env:
+  - GO111MODULE=on
+before:
+  hooks:
+    - go mod tidy
+gomod:
+  proxy: false
+
+builds:
+- env:
+    - CGO_ENABLED=0
+  goos:
+    - linux
+  goarch:
+    - amd64
+    - arm
+    - arm64
+  goarm:
+    - "7"
+  mod_timestamp: '{{ .CommitTimestamp }}'
+  flags:
+    - -trimpath
+  ldflags:
+    - -s -w -X main.version={{ .Version }} -X main.commitSha={{.Commit}} -X main.buildDate={{ .Date }}
+checksum:
+  name_template: '{{ .ProjectName }}_checksums.txt'
+
+changelog:
+  sort: 'asc'
+  filters:
+    exclude: ['^docs:', '^test:', '^chore:', 'Merge pull request', 'Merge branch', 'go mod tidy']
+
+archives:
+  - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    files:
+    - config.toml
+
+nfpms:
+  - file_name_template: '{{ .ProjectName }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    maintainer: 'Abdul Khaliq <a.khaliq@outlook.my>'
+    description: Keycloak ssh pam modules providing password grant token for pam
+    license: MIT
+    formats:
+    - deb
+    - rpm
+    bindir: /opt/{{ .ProjectName }}
+    contents:
+      - src: config.toml
+        dst: /opt/{{ .ProjectName }}/config.toml
+    dependencies:
+    - git
