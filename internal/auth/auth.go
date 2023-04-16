@@ -14,7 +14,6 @@ import (
 	"github.com/Nerzal/gocloak/v13"
 	"github.com/coreos/go-oidc"
 	"github.com/golang-jwt/jwt"
-	"golang.org/x/oauth2"
 )
 
 type Token struct {
@@ -64,30 +63,28 @@ func VerifyToken(aToken, cID, cSecret, providerRealm, providerUrl string) error 
 	return nil
 }
 
-func RequestJWT(username, password, scope, otp string, c oauth2.Config) (string, error) {
+func RequestJWT(username, password, otp, tokenUrl, clientid, clientsecret, clientscope string) (string, error) {
 	// Create a new HTTP client
 	client := &http.Client{}
 
-	// Prepare token request parameters
+	// Encode the username, password (with OTP appended)
 	urlV := url.Values{}
 	urlV.Add("grant_type", "password")
-	urlV.Add("client_id", c.ClientID)
-	urlV.Add("client_secret", c.ClientSecret)
+	urlV.Add("client_id", clientid)
+	urlV.Add("client_secret", clientsecret)
 	urlV.Add("username", username)
 	urlV.Add("password", password)
 
-	if len(otp) > 0 {
-		urlV.Add("scope", scope)
+	if len(clientscope) > 0 {
+		urlV.Add("scop", clientscope)
 	}
-	// urlVals.Add("scope", c.scope)
 
-	// Encode the username, password (with OTP appended), and grant type as form data
 	if len(otp) > 0 {
 		urlV.Add("totp", otp)
 	}
 
 	// Send a POST request to the token endpoint
-	req, err := http.NewRequest("POST", c.Endpoint.TokenURL, strings.NewReader(urlV.Encode()))
+	req, err := http.NewRequest("POST", tokenUrl, strings.NewReader(urlV.Encode()))
 	if err != nil {
 		return "", err
 	}
