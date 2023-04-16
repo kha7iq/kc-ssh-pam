@@ -19,6 +19,7 @@
 
 <p align="center">
   <a href="#install">Install</a> •
+  <a href="#usage">Usage</a> •
   <a href="#configuration">Configuration</a> •
   <a href="#contributing">Contributing</a> •
   <a href="#show-your-support">Show Your Support</a>
@@ -30,8 +31,20 @@
 
 Once the password grant token is obtained, the program verifies it and passes the necessary parameters so that the user can be authenticated via SSH and access the Linux systems.
 
+## Install
+
+```bash
+# DEB
+sudo dpkg -i kc-ssh-pam_amd64.deb
+
+# RPM
+sudo rpm -i kc-ssh-pam_amd64.rpm
+
 ```
-❯ kc-ssh-pam --help   
+
+## Usage
+```bash
+❯ kc-ssh-pam --help
 Usage: kc-ssh-pam USERNAME PASSWORD/[OTP]
 
 Generates a password grant token from Keycloak for the given user.
@@ -41,14 +54,13 @@ Options:
   -v, --version           Show version information
 
 Notes:
-  The program requires a configuration file named 'config.toml' to be present in the 
-  current directory , installation directory, or in '/etc/config.toml', or in 
-  '$HOME/.config/config.toml', in that order.
+  For the program to function properly, it needs to locate a configuration file called 'config.toml'.
+  The program will search for this file in the current directory, default install '/opt/kc-ssh-pam', '/etc/config.toml',
+  and '$HOME/.config/config.toml', in that specific order.
 
   In addition to defaults, all configuration parameters can also be provided through environment variables.
 
-  KC_SSH_REALM   KC_SSH_ENDPOINT   KC_SSH_CLIENTID  
-  KC_SSH_CLIENTSECRET  KC_SSH_CLIENTSCOPE
+  $KC_SSH_REALM $KC_SSH_ENDPOINT $KC_SSH_CLIENTID $KC_SSH_CLIENTSECRET $KC_SSH_CLIENTSCOPE
   
   To use the program, you must create a client in Keycloak and provide the following 
   information in the configuration file: realm, endpoint, client ID, client secret, and 
@@ -62,12 +74,14 @@ Arguments:
   EXAMPLE                 (With otp): echo testpass/717912 | kc-ssh-pam (Only Password): echo testpass | kc-ssh-pam
 ```
 
-
-
 ## Configuration
-  The program requires a configuration file named 'config.toml' to be present in the 
-  current directory , installation directory, or in '/etc/config.toml', or in 
-  '$HOME/.config/config.toml', in that order.
+  For the program to function properly, it needs to locate a configuration file called `config.toml`.
+
+  The program will search for this file in the current directory, default install `/opt/kc-ssh-pam`, `/etc/config.toml`,
+
+  and `$HOME/.config/config.toml`, in that specific order.
+  
+`config.toml`
   ```
 realm = "ssh-demo"
 endpoint = "https://keycloak.example.com"
@@ -76,8 +90,36 @@ clientsecret = "MIKEcHObWmI3V3pF1hcSqC9KEILfLN"
 clientscop = "openid"
 
   ```
+* Edit `/etc/pam.d/sshd` and add the following at the top of file
+```bash
+auth sufficient pam_exec.so expose_authtok      log=/var/log/kc-ssh-pam.log     /opt/kc-ssh-pam/kc-ssh-pam
+```
+- User is not automatically created during login, so a local user must be present on the system before hand.
 
+To automatically create a user install 
+```bash
+ apt-get install libpam-script
+```
+Add the follwoing in `/etc/pam.d/sshd` underneath previous argument
+```bash
+auth optional pam_script.so
+```
 
+Then, the script itself. In the file `/usr/share/libpam-script/pam_script_auth`
+```bash
+#!/bin/bash
+adduser $PAM_USER --disabled-password --quiet --gecos ""
+```
+In PAM modules, username is given in "$PAM_USER" variable.
+
+Make this script executable
+```bash
+chmod +x /usr/share/libpam-script/pam_script_auth 
+```
+Restart sshd service
+```bash
+sudo systemctl restart sshd
+```
 
 ## Contributing
 
