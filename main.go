@@ -53,5 +53,5 @@ func main() {
 		log.Fatal(err)
 		os.Exit(3)
 	}
-	log.Println("Token acquired and verified Sucessfully.")
+	log.Println("Token acquired and verified Successfully.")
 }

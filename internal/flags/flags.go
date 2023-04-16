@@ -16,14 +16,13 @@ Options:
   -v, --version           Show version information
 
 Notes:
-  The program requires a configuration file named 'config.toml' to be present in the 
-  current directory , installation directory, or in '/etc/config.toml', or in 
-  '$HOME/.config/config.toml', in that order.
+  For the program to function properly, it needs to locate a configuration file called 'config.toml'.
+  The program will search for this file in the current directory, default install '/opt/kc-ssh-pam', '/etc/config.toml',
+  and '$HOME/.config/config.toml', in that specific order.
 
   In addition to defaults, all configuration parameters can also be provided through environment variables.
 
-  KC_SSH_REALM   KC_SSH_ENDPOINT   KC_SSH_CLIENTID  
-  KC_SSH_CLIENTSECRET  KC_SSH_CLIENTSCOPE
+  $KC_SSH_REALM $KC_SSH_ENDPOINT $KC_SSH_CLIENTID $KC_SSH_CLIENTSECRET $KC_SSH_CLIENTSCOPE
   
   To use the program, you must create a client in Keycloak and provide the following 
   information in the configuration file: realm, endpoint, client ID, client secret, and 
