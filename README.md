@@ -6,10 +6,12 @@
 <h4 align="center">Keycloak SSH PAM</h4>
 
 <p align="center">
+  <img alt="GitHub Build Status" src="https://img.shields.io/github/actions/workflow/status/kha7iq/kc-ssh-pam/build.yml?label=Build">
    <a href="https://github.com/kha7iq/kc-ssh-pam/releases">
-   <img alt="Release" src="https://img.shields.io/github/v/release/kha7iq/kc-ssh-pam">
+   <img alt="Release" src="https://img.shields.io/github/v/release/kha7iq/kc-ssh-pam?label=Release">
    <a href="https://goreportcard.com/report/github.com/kha7iq/kc-ssh-pam">
    <img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/kha7iq/kc-ssh-pam">
+   <img alt="GitHub go.mod Go version" src="https://img.shields.io/github/go-mod/go-version/kha7iq/kc-ssh-pam">
    <a href="https://github.com/kha7iq/kc-ssh-pam/issues">
    <img alt="GitHub issues" src="https://img.shields.io/github/issues/kha7iq/kc-ssh-pam?style=flat-square&logo=github&logoColor=white">
    <a href="https://github.com/kha7iq/kc-ssh-pam/blob/master/LICENSE.md">
@@ -40,6 +42,17 @@ sudo dpkg -i kc-ssh-pam_amd64.deb
 # RPM
 sudo rpm -i kc-ssh-pam_amd64.rpm
 
+```
+
+## Manual
+```bash
+# Chose desired version
+export KC_SSH_PAM_VERSION="0.1.1"
+wget -q https://github.com/kha7iq/kc-ssh-pam/releases/download/v${KC_SSH_PAM_VERSION}/kc-ssh-pam_linux_amd64.tar.gz && \
+tar -xf kc-ssh-pam_linux_amd64.tar.gz && \
+chmod +x kc-ssh-pam && \
+sudo mkdir -p /opt/kc-ssh-pam && \
+sudo mv kc-ssh-pam config.toml /opt/kc-ssh-pam
 ```
 
 ## Usage
@@ -76,9 +89,7 @@ Arguments:
 
 ## Configuration
   For the program to function properly, it needs to locate a configuration file called `config.toml`.
-
   The program will search for this file in the current directory, default install `/opt/kc-ssh-pam`, `/etc/config.toml`,
-
   and `$HOME/.config/config.toml`, in that specific order.
   
 `config.toml`
@@ -119,6 +130,39 @@ chmod +x /usr/share/libpam-script/pam_script_auth
 Restart sshd service
 ```bash
 sudo systemctl restart sshd
+```
+
+### Keycloak Cleint Creation
+```bash
+Step 1: Log in to the Keycloak Administration Console.
+
+Step 2: Select the realm for which you want to create the client.
+
+Step 3: Click on "Clients" from the left-hand menu, and then click on the "Create" button.
+
+Step 4: In the "Client ID" field, enter "ssh-login".
+
+Step 5: Set the "Client Protocol" to "openid-connect".
+
+Step 6: In the "Redirect URIs" field, enter "urn:ietf:wg:oauth:2.0:oob".
+
+Step 7: In the "Access Type" field, select "confidential".
+
+Step 8: In the "Standard Flow Enabled" field, select "ON".
+
+Step 9: In the "Direct Access Grants Enabled" field, select "ON".
+
+Step 10: Click on the "Save" button to create the client.
+
+To get the credentials of the client, follow these steps:
+
+Step 1: Go to the "Clients" page in the Keycloak Administration Console.
+
+Step 2: Select the "ssh-login" client from the list.
+
+Step 3: Click on the "Credentials" tab.
+
+Step 4: The client secret will be displayed under the "Client Secret" section.
 ```
 
 ## Contributing
