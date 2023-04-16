@@ -19,9 +19,10 @@ var (
 	}
 	configName  = "config"
 	configPaths = []string{
+		".",
 		"/opt/kc-ssh-pam",
 		"/etc/",
-		"$HOME/",
+		"$HOME/.config/",
 	}
 )
 
