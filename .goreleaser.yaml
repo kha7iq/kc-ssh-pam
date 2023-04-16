@@ -38,7 +38,7 @@ archives:
 nfpms:
   - file_name_template: '{{ .ProjectName }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
     maintainer: 'Abdul Khaliq <a.khaliq@outlook.my>'
-    description: Keycloak ssh pam modules providing password grant token for pam
+    description: KC SSH PAM provides a password grant token from keycloak for Pluggable Authentication Modules (PAM) SSO.
     license: MIT
     formats:
     - deb
