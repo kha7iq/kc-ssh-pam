@@ -90,8 +90,13 @@ Arguments:
 
 ## Configuration
   For the program to function properly, it needs to locate a configuration file called `config.toml`.
-  The program will search for this file in the current directory, default install `/opt/kc-ssh-pam`, `/etc/config.toml`,
-  and `$HOME/.config/config.toml`, in that specific order.
+  
+  The program will search for this file in the follwoing order..
+  1. Present working directory
+  2. Default install location `/opt/kc-ssh-pam/config.toml`
+  3. System `/etc/config.toml`,
+  4. `$HOME/.config/config.toml`
+  
   
 `config.toml`
   ```
