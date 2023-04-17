@@ -11,6 +11,7 @@
    <img alt="Release" src="https://img.shields.io/github/v/release/kha7iq/kc-ssh-pam?label=Release">
    <a href="https://goreportcard.com/report/github.com/kha7iq/kc-ssh-pam">
    <img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/kha7iq/kc-ssh-pam">
+   <a href="#">
    <img alt="GitHub go.mod Go version" src="https://img.shields.io/github/go-mod/go-version/kha7iq/kc-ssh-pam">
    <a href="https://github.com/kha7iq/kc-ssh-pam/issues">
    <img alt="GitHub issues" src="https://img.shields.io/github/issues/kha7iq/kc-ssh-pam?style=flat-square&logo=github&logoColor=white">
