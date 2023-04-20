@@ -171,6 +171,8 @@ Step 3: Click on the "Credentials" tab.
 Step 4: The client secret will be displayed under the "Client Secret" section.
 ```
 
+:diamond_shape_with_a_dot_inside: Detailed article with screenshots is also [available here](https://lmno.pk/post/kc-sso-pam/)
+
 ## Contributing
 
 Contributions, issues and feature requests are welcome!<br/>Feel free to check
