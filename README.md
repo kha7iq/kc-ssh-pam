@@ -2,9 +2,6 @@
   <br>
   <p align="center"><img width=30% src="https://raw.githubusercontent.com/kha7iq/kc-ssh-pam/master/.github/img/logo.png"></p>
 </h2>
-
-<h4 align="center">Keycloak SSH PAM</h4>
-
 <p align="center">
   <img alt="GitHub Build Status" src="https://img.shields.io/github/actions/workflow/status/kha7iq/kc-ssh-pam/build.yml?label=Build">
    <a href="https://github.com/kha7iq/kc-ssh-pam/releases">
