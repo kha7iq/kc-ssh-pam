@@ -36,6 +36,9 @@ Once the password grant token is obtained, the program verifies it and passes th
 
 ## Install
 
+<details>
+    <summary>DEB & RPM</summary>
+
 ```bash
 # DEB
 sudo dpkg -i kc-ssh-pam_amd64.deb
@@ -44,8 +47,12 @@ sudo dpkg -i kc-ssh-pam_amd64.deb
 sudo rpm -i kc-ssh-pam_amd64.rpm
 
 ```
+</details>
 
-## Manual
+
+<details>
+    <summary>Manual</summary>
+
 ```bash
 # Chose desired version
 export KC_SSH_PAM_VERSION="0.1.1"
@@ -55,6 +62,8 @@ chmod +x kc-ssh-pam && \
 sudo mkdir -p /opt/kc-ssh-pam && \
 sudo mv kc-ssh-pam config.toml /opt/kc-ssh-pam
 ```
+</details>
+
 
 ## Usage
 ```bash
