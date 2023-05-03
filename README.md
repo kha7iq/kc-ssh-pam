@@ -1,5 +1,4 @@
 <h2 align="center">
-  <br>
   <p align="center"><img width=30% src="https://raw.githubusercontent.com/kha7iq/kc-ssh-pam/master/.github/img/logo.png"></p>
 </h2>
 <p align="center">
@@ -14,7 +13,6 @@
    <img alt="GitHub issues" src="https://img.shields.io/github/issues/kha7iq/kc-ssh-pam?style=flat-square&logo=github&logoColor=white">
    <a href="https://github.com/kha7iq/kc-ssh-pam/blob/master/LICENSE.md">
    <img alt="License" src="https://img.shields.io/github/license/kha7iq/kc-ssh-pam">
-
 </p>
 
 <p align="center">
