@@ -20,7 +20,6 @@
   <a href="#usage">Usage</a> •
   <a href="#configuration">Configuration</a> •
   <a href="#contributing">Contributing</a> •
-  <a href="#show-your-support">Show Your Support</a>
 </p>
 
 # Keycloak SSH PAM
@@ -182,11 +181,3 @@ Step 4: The client secret will be displayed under the "Client Secret" section.
 Contributions, issues and feature requests are welcome!<br/>Feel free to check
 [issues page](https://github.com/kha7iq/kc-ssh-pam/issues). You can also take a look
 at the [contributing guide](https://github.com/kha7iq/kc-ssh-pam/blob/master/CONTRIBUTING.md).
-
-## Show your support
-
-Give a ⭐️  if you like this project!
-
-Fork it ⚙️
-
-Make it better 🕶️
