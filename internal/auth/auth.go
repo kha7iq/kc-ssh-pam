@@ -36,7 +36,7 @@ func VerifyToken(aToken, cID, cSecret, providerRealm, providerUrl string) error 
 	// Parse the access token
 	token, _, err := parser.ParseUnverified(aToken, jwt.MapClaims{})
 	if err != nil {
-		return fmt.Errorf("Error parsing access token:", err)
+		return fmt.Errorf("Error parsing access token: %v", err)
 
 	}
 
@@ -57,7 +57,7 @@ func VerifyToken(aToken, cID, cSecret, providerRealm, providerUrl string) error 
 	// Verify the access token with Keycloak
 	_, err = client.RetrospectToken(context.Background(), aToken, cID, cSecret, providerRealm)
 	if err != nil {
-		return fmt.Errorf("Access token verification failed:", err)
+		return fmt.Errorf("Access token verification failed: %v", err)
 	}
 
 	return nil
