@@ -69,7 +69,7 @@ Generates a password grant token from Keycloak for the given user.
 Options:
   -h, --help              Show this help message and exit
   -v, --version           Show version information
-  -c                  Set configuration file path
+  -c                      Set configuration file path
 
 Notes:
   For the program to function properly, it needs to locate a configuration file called 'config.toml'.
@@ -97,11 +97,11 @@ Arguments:
   For the program to function properly, it needs to locate a configuration file called `config.toml`.
   
   The program will search for this file in the follwoing order..
-  1. If a configuration path is specified using the `-c`` flag, it will override any other defined options.
-  2. Verify the existence of the KC_SSH_CONFIG variable; if it's defined, use the config location specified within it.
+  1. If a config path is specified using the `-c` flag, it will override any other defined options.
+  2. Verify the existence of the KC_SSH_CONFIG variable; if it's defined, use the location specified within it.
   3. The working directory where the program is being executed from.
-  4. Default install location `/opt/kc-ssh-pam/config.toml`
-  5. `$HOME/.config/config.toml`
+  4. Default install location `/opt/kc-ssh-pam/`
+  5. `$HOME/.config/`
   
   
 `config.toml`
