@@ -49,7 +49,7 @@ sudo rpm -i kc-ssh-pam_amd64.rpm
 
 ```bash
 # Chose desired version
-export KC_SSH_PAM_VERSION="0.1.1"
+export KC_SSH_PAM_VERSION="0.1.2"
 wget -q https://github.com/kha7iq/kc-ssh-pam/releases/download/v${KC_SSH_PAM_VERSION}/kc-ssh-pam_linux_amd64.tar.gz && \
 tar -xf kc-ssh-pam_linux_amd64.tar.gz && \
 chmod +x kc-ssh-pam && \
@@ -77,7 +77,7 @@ Notes:
 
   In addition to defaults, all configuration parameters can also be provided through environment variables.
 
-  $KC_SSH_REALM $KC_SSH_ENDPOINT $KC_SSH_CLIENTID $KC_SSH_CLIENTSECRET $KC_SSH_CLIENTSCOPE
+  KC_SSH_CONFIG KC_SSH_REALM KC_SSH_ENDPOINT KC_SSH_CLIENTID KC_SSH_CLIENTSECRET KC_SSH_CLIENTSCOPE
   
   To use the program, you must create a client in Keycloak and provide the following 
   information in the configuration file: realm, endpoint, client ID, client secret, and 
@@ -95,9 +95,9 @@ Arguments:
   For the program to function properly, it needs to locate a configuration file called `config.toml`.
   
   The program will search for this file in the follwoing order..
-  1. Present working directory
-  2. Default install location `/opt/kc-ssh-pam/config.toml`
-  3. System `/etc/config.toml`,
+  1. Verify the existence of the KC_SSH_CONFIG variable; if it's defined, use the config location specified within it.
+  2. Present working directory
+  3. Default install location `/opt/kc-ssh-pam/config.toml`
   4. `$HOME/.config/config.toml`
   
   
