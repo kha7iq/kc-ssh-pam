@@ -16,8 +16,7 @@ var (
 )
 
 func main() {
-	// displayVersion()
-	flags.DisplayHelp(version, buildDate, commitSha)
+	flags.ParseFlags(version, buildDate, commitSha)
 	c, err := conf.LoadConfig()
 	if err != nil {
 		log.Fatalf("Error reading config file: %s", err)

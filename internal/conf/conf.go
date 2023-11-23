@@ -1,8 +1,11 @@
 package conf
 
-import "github.com/spf13/viper"
+import (
+	"os"
 
-// Config struct will store the configuration values provided by user
+	"github.com/spf13/viper"
+)
+
 type Config struct {
 	Realm        string
 	Endpoint     string
@@ -17,32 +20,25 @@ var (
 		"endpoint": "localhost",
 		"scope":    "openid",
 	}
-	configName  = "config"
-	configPaths = []string{
-		".",
-		"/opt/kc-ssh-pam",
-		"/etc/",
-		"$HOME/.config/",
-	}
+	ConfigPath string
 )
 
 func LoadConfig() (config Config, err error) {
 	for k, v := range defaults {
 		viper.SetDefault(k, v)
 	}
-	for _, p := range configPaths {
-		viper.AddConfigPath(p)
+	if len(ConfigPath) == 0 {
+
+		ConfigPath = os.Getenv("KC_SSH_CONFIG")
 	}
 
-	viper.SetConfigName(configName)
+	viper.SetConfigFile(ConfigPath)
 	viper.SetConfigType("toml")
-
-	viper.SetEnvPrefix("kc_ssh")  // Becomes "KC_SSH"
-	viper.BindEnv("Realm")        // KC_SSH_REALM
-	viper.BindEnv("Endpoint")     // KC_SSH_ENDPOINT
-	viper.BindEnv("ClientID")     // KC_SSH_CLIENTID
-	viper.BindEnv("ClientSecret") // KC_SSH_CLIENTSECRET
-	viper.BindEnv("ClientScope")  // KC_SSH_CLIENTSCOPE
+	viper.AddConfigPath("/opt/kc-ssh-pam")
+	viper.AddConfigPath(".")
+	viper.AddConfigPath("$HOME/.config")
+	viper.SetEnvPrefix("kc_ssh")
+	viper.AutomaticEnv()
 
 	err = viper.ReadInConfig()
 	if err != nil {
