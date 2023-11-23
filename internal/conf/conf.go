@@ -20,16 +20,19 @@ var (
 		"endpoint": "localhost",
 		"scope":    "openid",
 	}
+	ConfigPath string
 )
 
-func LoadConfig(configPath ...string) (config Config, err error) {
+func LoadConfig() (config Config, err error) {
 	for k, v := range defaults {
 		viper.SetDefault(k, v)
 	}
+	if len(ConfigPath) == 0 {
 
-	configFilePath := os.Getenv("KC_SSH_CONFIG")
+		ConfigPath = os.Getenv("KC_SSH_CONFIG")
+	}
 
-	viper.SetConfigFile(configFilePath)
+	viper.SetConfigFile(ConfigPath)
 	viper.SetConfigType("toml")
 	viper.AddConfigPath("/opt/kc-ssh-pam")
 	viper.AddConfigPath(".")
