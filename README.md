@@ -69,11 +69,12 @@ Generates a password grant token from Keycloak for the given user.
 Options:
   -h, --help              Show this help message and exit
   -v, --version           Show version information
+  -c                  Set configuration file path
 
 Notes:
   For the program to function properly, it needs to locate a configuration file called 'config.toml'.
-  The program will search for this file in the current directory, default install '/opt/kc-ssh-pam', '/etc/config.toml',
-  and '$HOME/.config/config.toml', in that specific order.
+  The program will search for this file in the current directory, '/opt/kc-ssh-pam' and '$HOME/.config/config.toml',
+  in that specific order. You can also set a custom path by specifying KC_SSH_CONFIG variable or -c flag which takes prefrence.
 
   In addition to defaults, all configuration parameters can also be provided through environment variables.
 
@@ -89,16 +90,18 @@ Arguments:
   OTP                     (Optional) The OTP code if two-factor authentication is enabled i.e (password/otp)
 
   EXAMPLE                 (With otp): echo testpass/717912 | kc-ssh-pam (Only Password): echo testpass | kc-ssh-pam
+
 ```
 
 ## Configuration
   For the program to function properly, it needs to locate a configuration file called `config.toml`.
   
   The program will search for this file in the follwoing order..
-  1. Verify the existence of the KC_SSH_CONFIG variable; if it's defined, use the config location specified within it.
-  2. Present working directory
-  3. Default install location `/opt/kc-ssh-pam/config.toml`
-  4. `$HOME/.config/config.toml`
+  1. If a configuration path is specified using the `-c`` flag, it will override any other defined options.
+  2. Verify the existence of the KC_SSH_CONFIG variable; if it's defined, use the config location specified within it.
+  3. The working directory where the program is being executed from.
+  4. Default install location `/opt/kc-ssh-pam/config.toml`
+  5. `$HOME/.config/config.toml`
   
   
 `config.toml`
