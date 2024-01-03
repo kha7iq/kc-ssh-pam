@@ -5,13 +5,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
+	"mime"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
 	"time"
 
-	"github.com/Nerzal/gocloak/v13"
 	"github.com/coreos/go-oidc"
 	"github.com/golang-jwt/jwt"
 )
@@ -25,10 +26,71 @@ type Token struct {
 	Expiry       time.Time `json:"expiry,omitempty"`
 }
 
-func VerifyToken(aToken, cID, cSecret, providerRealm, providerUrl string) error {
+type OIDCProviderInfo struct {
+	Issuer      string      `json:"issuer"`
+	AuthURL     string      `json:"authorization_endpoint"`
+	TokenURL    string      `json:"token_endpoint"`
+	JWKSURL     string      `json:"jwks_uri"`
+	UserInfoURL string      `json:"userinfo_endpoint"`
+	Algorithms  []string    `json:"id_token_signing_alg_values_supported"`
+	KeySet      oidc.KeySet `json:",omitempty"`
+}
 
-	// Set up the Keycloak client
-	client := gocloak.NewClient(providerUrl)
+// Stole this from github.com/coreos/go-oidc
+func unmarshalResp(r *http.Response, body []byte, v interface{}) error {
+	err := json.Unmarshal(body, &v)
+	if err == nil {
+		return nil
+	}
+	ct := r.Header.Get("Content-Type")
+	mediaType, _, parseErr := mime.ParseMediaType(ct)
+	if parseErr == nil && mediaType == "application/json" {
+		return fmt.Errorf("got Content-Type = application/json, but could not unmarshal as JSON: %v", err)
+	}
+	return fmt.Errorf("expected Content-Type = application/json, got %q: %v", ct, err)
+}
+
+func GetProviderInfo(providerEndpoint string) (*OIDCProviderInfo, error) {
+	wellKnown := strings.TrimSuffix(providerEndpoint, "/") + "/.well-known/openid-configuration"
+	// Query the oidc provider for the configuration
+	req, err := http.NewRequest("GET", wellKnown, nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("unable to read response body: %v", err)
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("%s: %s", resp.Status, body)
+	}
+
+	// Create a pointer to hold the internal oidc config from the provider
+	p := new(OIDCProviderInfo)
+	// Parse the json body of the http response into the config variable
+	err = unmarshalResp(resp, body, p)
+	if err != nil {
+		return nil, fmt.Errorf("oidc: failed to decode provider discovery object: %v", err)
+	}
+	ctx := context.Background()
+	p.KeySet = oidc.NewRemoteKeySet(ctx, p.JWKSURL)
+	return p, nil
+}
+
+func (provider *OIDCProviderInfo) VerifyToken(aToken string) error {
+	// Verify the JWT Signature before further parsing and processing
+	ctx := context.Background()
+	_, err := provider.KeySet.VerifySignature(ctx, aToken)
+	if err != nil {
+		return fmt.Errorf("Access token verification failed:", err)
+	}
 
 	// Set up the JWT token parser
 	parser := jwt.Parser{}
@@ -37,7 +99,6 @@ func VerifyToken(aToken, cID, cSecret, providerRealm, providerUrl string) error 
 	token, _, err := parser.ParseUnverified(aToken, jwt.MapClaims{})
 	if err != nil {
 		return fmt.Errorf("Error parsing access token: %v", err)
-
 	}
 
 	// Get the token's claims
@@ -54,12 +115,6 @@ func VerifyToken(aToken, cID, cSecret, providerRealm, providerUrl string) error 
 		return fmt.Errorf("Access token has expired")
 	}
 
-	// Verify the access token with Keycloak
-	_, err = client.RetrospectToken(context.Background(), aToken, cID, cSecret, providerRealm)
-	if err != nil {
-		return fmt.Errorf("Access token verification failed: %v", err)
-	}
-
 	return nil
 }
 
@@ -71,7 +126,9 @@ func RequestJWT(username, password, otp, tokenUrl, clientid, clientsecret, clien
 	urlV := url.Values{}
 	urlV.Add("grant_type", "password")
 	urlV.Add("client_id", clientid)
-	urlV.Add("client_secret", clientsecret)
+	if len(clientsecret) > 0 {
+		urlV.Add("client_secret", clientsecret)
+	}
 	urlV.Add("username", username)
 	urlV.Add("password", password)
 
@@ -140,17 +197,4 @@ func ReadPasswordWithOTP() (string, string, error) {
 	}
 
 	return password, otp, nil
-}
-
-func GetOIDCProvider(providerEndpoint string) (*oidc.Provider, error) {
-	// Create a context to perform the OIDC discovery process
-	ctx := context.Background()
-
-	// Retrieve provider configuration
-	provider, err := oidc.NewProvider(ctx, providerEndpoint)
-	if err != nil {
-		return nil, err
-	}
-
-	return provider, nil
 }
