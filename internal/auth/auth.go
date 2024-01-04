@@ -133,7 +133,7 @@ func RequestJWT(username, password, otp, tokenUrl, clientid, clientsecret, clien
 	urlV.Add("password", password)
 
 	if len(clientscope) > 0 {
-		urlV.Add("scop", clientscope)
+		urlV.Add("scope", clientscope)
 	}
 
 	if len(otp) > 0 {
