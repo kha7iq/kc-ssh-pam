@@ -19,6 +19,7 @@
   <a href="#install">Install</a> •
   <a href="#usage">Usage</a> •
   <a href="#configuration">Configuration</a> •
+  <a href="#contributers ">Contributers </a> •
   <a href="#contributing">Contributing</a> •
 </p>
 
@@ -178,6 +179,17 @@ Step 4: The client secret will be displayed under the "Client Secret" section.
 ```
 
 :diamond_shape_with_a_dot_inside: Detailed article with screenshots is also [available here](https://lmno.pk/post/kc-sso-pam/)
+
+## Contributers
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="left" valign="top" width="14.28%"><a href="github.com/sradigan"><img src="https://gitlab.com/uploads/-/system/user/avatar/2473327/avatar.png" width="100px;" alt="Sean Radigan "/><br /><sub><b>Sean Radigan </b></sub></a><br /><a href="https://github.com/kha7iq/kc-ssh-pam/pull/6" title="Documentation">📖</a> <a href="https://github.com/kha7iq/kc-ssh-pam/pull/6" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
+
 
 ## Contributing
 
