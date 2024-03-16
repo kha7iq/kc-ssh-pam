@@ -89,7 +89,7 @@ func (provider *OIDCProviderInfo) VerifyToken(aToken string) error {
 	ctx := context.Background()
 	_, err := provider.KeySet.VerifySignature(ctx, aToken)
 	if err != nil {
-		return fmt.Errorf("Access token verification failed:", err)
+		return fmt.Errorf("Access token verification failed: %v", err)
 	}
 
 	// Set up the JWT token parser
