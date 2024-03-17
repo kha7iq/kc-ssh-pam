@@ -105,6 +105,9 @@ Arguments:
   5. `$HOME/.config/`
   
   
+> [!IMPORTANT]  
+> For proper operation, ensure that SeLinux is configured in Permissive mode.
+  
 `config.toml`
   ```
 realm = "ssh-demo"
