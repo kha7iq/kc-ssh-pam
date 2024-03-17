@@ -188,7 +188,7 @@ Step 4: The client secret will be displayed under the "Client Secret" section.
 <table>
   <tbody>
     <tr>
-      <td align="left" valign="top" width="14.28%"><a href="github.com/sradigan"><img src="https://gitlab.com/uploads/-/system/user/avatar/2473327/avatar.png" width="100px;" alt="Sean Radigan "/><br /><sub><b>Sean Radigan </b></sub></a><br /><a href="https://github.com/kha7iq/kc-ssh-pam/pull/6" title="Documentation">📖</a> <a href="https://github.com/kha7iq/kc-ssh-pam/pull/6" title="Code">💻</a></td>
+      <td align="left" valign="top" width="14.28%"><a href="https://github.com/sradigan"><img src="https://gitlab.com/uploads/-/system/user/avatar/2473327/avatar.png" width="100px;" alt="Sean Radigan "/><br /><sub><b>Sean Radigan </b></sub></a><br /><a href="https://github.com/kha7iq/kc-ssh-pam/pull/6" title="Documentation">📖</a> <a href="https://github.com/kha7iq/kc-ssh-pam/pull/6" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
