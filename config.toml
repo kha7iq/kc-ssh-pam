@@ -3,3 +3,6 @@ endpoint = "https://keycloak.example.com"
 clientid = "keycloak-client-id"
 clientsecret = "MIKEcHObWmI3V3pF1hcSqC9KEILfLN"
 clientscop = "openid"
+# Credentials of the keycloak realm user with the `realm-management->view-users` role assigned
+realmapiusername = "kc-api-user"
+realmapipassword = "kc-api-passwd"

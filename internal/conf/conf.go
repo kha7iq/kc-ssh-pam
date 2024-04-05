@@ -12,6 +12,8 @@ type Config struct {
 	ClientID     string
 	ClientSecret string
 	ClientScope  string
+	RealmAPIUsername   string
+	RealmAPIPassword string
 }
 
 var (

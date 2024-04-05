@@ -7,6 +7,7 @@ import (
 	"github.com/kha7iq/kc-ssh-pam/internal/auth"
 	"github.com/kha7iq/kc-ssh-pam/internal/conf"
 	"github.com/kha7iq/kc-ssh-pam/internal/flags"
+	"github.com/kha7iq/kc-ssh-pam/internal/users"
 )
 
 var (
@@ -25,8 +26,14 @@ func main() {
 	providerEndpoint := c.Endpoint + "/realms/" + c.Realm
 	username := os.Getenv("PAM_USER")
 
-	// Analyze the input from stdIn and split the password if it containcts "/"  return otp and pass
-	password, otp, err := auth.ReadPasswordWithOTP()
+	// Check if TOTP is configured for the user and handle the errors
+	hasTOTP, err := users.IsTOTPConfigured(username, c)
+	if err != nil {
+		log.Fatalf("Failed to retrieve token for %v - error: %v\n", username, err)
+	}
+
+	// Analyze the input from stdIn and split the password by last index of "/" if TOTP is configured
+	password, otp, err := auth.ReadPasswordWithOTP(hasTOTP)
 	if err != nil {
 		log.Fatal(err)
 	}

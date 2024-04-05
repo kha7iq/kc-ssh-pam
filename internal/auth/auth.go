@@ -172,7 +172,7 @@ func RequestJWT(username, password, otp, tokenUrl, clientid, clientsecret, clien
 	return tokenResp.AccessToken, nil
 }
 
-func ReadPasswordWithOTP() (string, string, error) {
+func ReadPasswordWithOTP(hasTOTP bool) (string, string, error) {
 	var password string
 	var otp string
 
@@ -180,11 +180,14 @@ func ReadPasswordWithOTP() (string, string, error) {
 	if stdinScanner.Scan() {
 		pass := strings.Trim(stdinScanner.Text(), "\x00")
 
-		// Extract the password and OTP from the input string
-		if strings.Contains(pass, "/") {
-			creds := strings.Split(pass, "/")
-			password = creds[0]
-			otp = creds[1]
+		// Check if user has TOTP configured
+		if hasTOTP {
+			// Extract the password and OTP from the input string
+			slashLastIndex := strings.LastIndex(pass, "/")
+			if slashLastIndex != -1 {
+				password = pass[:slashLastIndex]
+				otp = pass[slashLastIndex+1:]
+			} 
 		} else {
 			password = pass
 			otp = ""
