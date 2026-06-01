@@ -183,6 +183,17 @@ Step 4: The client secret will be displayed under the "Client Secret" section.
 
 :diamond_shape_with_a_dot_inside: Detailed article with screenshots is also [available here](https://lmno.pk/post/kc-sso-pam/)
 
+## A Note on Automatic User Provisioning (Limitations)
+
+You may wonder why `kc-ssh-pam` cannot automatically create a local Unix user on their very first SSH password login if they do not already exist on the system.
+
+This is due to an intentional security feature in **OpenSSH (`sshd`)** designed to prevent timing attacks and user enumeration:
+
+1. **The Pre-Check:** When you attempt to SSH, OpenSSH checks if the username exists in the system database (via `getpwnam`) *before* running the PAM stack.
+2. **Password Obfuscation:** If the user does not exist locally, OpenSSH flags the connection as invalid and **intentionally replaces the user's password with a dummy value** (usually a single backspace byte `\b`) before passing it to PAM.
+3. **Authentication Failure:** Because `kc-ssh-pam` receives this fake password from OpenSSH, it cannot authenticate the user against Keycloak, preventing the auto-creation flow from completing on the first try.
+
+
 ## Contributers
 <!-- markdownlint-disable -->
 <table>
