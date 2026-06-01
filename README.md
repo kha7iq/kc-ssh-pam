@@ -191,7 +191,7 @@ This is due to an intentional security feature in **OpenSSH (`sshd`)** designed 
 
 1. **The Pre-Check:** When you attempt to SSH, OpenSSH checks if the username exists in the system database (via `getpwnam`) *before* running the PAM stack.
 2. **Password Obfuscation:** If the user does not exist locally, OpenSSH flags the connection as invalid and **intentionally replaces the user's password with a dummy value** (usually a single backspace byte `\b`) before passing it to PAM.
-3. **Authentication Failure:** Because `kc-ssh-pam` receives this fake password from OpenSSH, it cannot authenticate the user against Keycloak, preventing the auto-creation flow from completing on the first try.
+3. **Authentication Failure:** Because `kc-ssh-pam` receives this fake password from OpenSSH, it cannot authenticate the user against Keycloak, preventing the auto-creation flow from completing.
 
 
 ## Contributers
